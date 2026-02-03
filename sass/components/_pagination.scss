@@ -1,0 +1,26 @@
+.pagination {
+    display: flex;
+    gap: 1.2rem;
+
+    &__page-numbers {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    &__page-number {
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 4.4rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-color: var(--clr-gray-0);
+
+        &--active {
+            background-color: var(--clr-blue-2);
+        }
+    }
+}

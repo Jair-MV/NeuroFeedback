@@ -1,3 +1,33 @@
+@property --margin-value {
+    syntax: '<length> | <percentage>';
+    initial-value: 0;
+    inherits: false;
+}
+
+@property --margin-t-value {
+    syntax: '<length> | <percentage>';
+    initial-value: 0;
+    inherits: false;
+}
+
+@property --margin-b-value {
+    syntax: '<length> | <percentage>';
+    initial-value: 0;
+    inherits: false;
+}
+
+@property --margin-l-value {
+    syntax: '<length> | <percentage>';
+    initial-value: 0;
+    inherits: false;
+}
+
+@property --margin-r-value {
+    syntax: '<length> | <percentage>';
+    initial-value: 0;
+    inherits: false;
+}
+
 // Layout
 .u-display         { display:         var(--display-value); }
 .u-justify-content { justify-content: var(--justify-c-value); }

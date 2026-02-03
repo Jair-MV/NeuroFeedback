@@ -27,4 +27,13 @@
             background-color: var(--clr-blue-2);
         }
     }
+
+    &--cta {
+        background-color: var(--clr-blue-6);
+        color: var(--clr-gray-0);
+
+        &:hover {
+            background-color: var(--clr-blue-8);
+        }
+    }
 }

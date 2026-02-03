@@ -17,7 +17,54 @@
     </head>
 
     <body>
-        <h1>Hola Mundo</h1>
+        <header class="header">
+            <form class="search-form">
+                <input
+                    type="text"
+                    placeholder="Busca por nombre, teléfono o correo"
+                />
+                <button class="button button--icon">
+                    <ion-icon name="search-outline"></ion-icon>
+                </button>
+            </form>
+        </header>
+
+        <main>
+            <div class="container">
+                <article class="patient-card">
+                    <div
+                        class="u-margin u-display u-gap"
+                        style="
+                            --margin-b-value: 2rem;
+                            --display-value: flex;
+                            --gap-value: 2rem;
+                        "
+                    >
+                        <img src="img/ui-face-0.jpg" alt="Patient photo" />
+
+                        <div>
+                            <p class="patient-card__name">Nicolás Bautista</p>
+                            <p class="patient-card__gender">Hombre</p>
+                        </div>
+
+                        <p class="age"><span>11</span><span>años</span></p>
+                    </div>
+
+                    <p class="patient-card__diagnosis">Dislexia</p>
+
+                    <a
+                        href="#"
+                        class="u-margin button"
+                        style="--margin-r-value: 1rem"
+                        ><ion-icon name="calendar-outline"></ion-icon>Agendar</a
+                    >
+                    <a href="#" class="button"
+                        ><ion-icon name="document-text-outline"></ion-icon
+                        >Detalles</a
+                    >
+                </article>
+            </div>
+        </main>
 
         <!-- Icons -->
         <script

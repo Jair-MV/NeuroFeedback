@@ -1,0 +1,30 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    padding: 1rem 1.5rem;
+    border-radius: 7px;
+    background-color: var(--clr-blue-0);
+
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: var(--clr-blue-1);
+    }
+
+    &--icon {
+        padding: 1.2rem;
+        border: none;
+        border-radius: 50%;
+
+        font-size: 2rem;
+        line-height: 0;
+
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--clr-blue-2);
+        }
+    }
+}

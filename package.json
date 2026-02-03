@@ -1,0 +1,14 @@
+{
+    "name": "neurofeedback",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "Jair-MV",
+    "main": "index.html",
+    "scripts": {
+        "watch:sass": "sass sass/main.scss css/style.css --watch"
+    },
+    "devDependencies": {
+        "sass": "^1.97.3"
+    }
+}

@@ -1,7 +1,11 @@
+// Config
+const DATA_URL = "../patients-data.json";
+const PATIENTS_PER_PAGE = 9;
+
 // State
 const state = {
     patients: [],
-    patientsPerPage: 9,
+    patientsPerPage: PATIENTS_PER_PAGE,
     currentPage: 0,
     totalPages: null,
 };
@@ -14,6 +18,8 @@ function randomNumber(min, max) {
 // ///////////////////////////////////////////////
 // DOM
 const patientsListEl = document.querySelector(".patients-list");
+const paginationEl = document.querySelector(".pagination");
+const pageNumbersEl = document.querySelector(".pagination__page-numbers");
 
 // ///////////////////////////////////////////////
 // Data
@@ -90,10 +96,28 @@ function renderPatients(container, patients, randomNumber) {
     });
 }
 
-// Events
-const paginationEl = document.querySelector(".pagination");
+function renderPaginationPageNumbers(container) {
+    container.innerHTML = "";
 
-paginationEl.addEventListener("click", function (e) {
+    Array.from({ length: state.totalPages + 1 }, function (_, i) {
+        const activeClass =
+            i === state.currentPage ? "pagination__page-number--active" : "";
+
+        const pageNumberMarkup = `
+            <div
+                data-page-number="${i}"
+                class="pagination__page-number ${activeClass}"
+            >
+                ${i + 1}
+            </div>
+        `;
+
+        container.insertAdjacentHTML("beforeend", pageNumberMarkup);
+    });
+}
+
+// Handlers
+function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
 
     if (!button) return;
@@ -116,13 +140,35 @@ paginationEl.addEventListener("click", function (e) {
 
     const patients = getPatients(state.currentPage);
     renderPatients(patientsListEl, patients, randomNumber);
+    renderPaginationPageNumbers(pageNumbersEl);
+}
+
+// Events
+paginationEl.addEventListener("click", handlePaginationButtonsClick);
+
+pageNumbersEl.addEventListener("click", function (e) {
+    const pageNumber = e.target.closest(".pagination__page-number");
+
+    if (!pageNumber) return;
+
+    // Go to selected page
+    const page = Number(pageNumber.dataset.pageNumber);
+
+    if (page === state.currentPage) return;
+
+    state.currentPage = page;
+
+    const patients = getPatients(page);
+    renderPatients(patientsListEl, patients, randomNumber);
+    renderPaginationPageNumbers(pageNumbersEl);
 });
 
 // Init
 async function init() {
-    await loadPatients("../patients-data.json");
+    await loadPatients(DATA_URL);
     const patients = getPatients(state.currentPage);
     renderPatients(patientsListEl, patients, randomNumber);
+    renderPaginationPageNumbers(pageNumbersEl);
 }
 
 init();

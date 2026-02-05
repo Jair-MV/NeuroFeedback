@@ -3,15 +3,7 @@
     align-items: center;
     gap: 1rem;
 
-    input {
+    &__input {
         width: 400px;
-        padding: 1rem 0.5rem;
-        border: none;
-        border-bottom: 1px solid var(--clr-gray-5);
-
-        &:focus {
-            outline: none;
-            border-color: var(--clr-gray-8);
-        }
     }
 }

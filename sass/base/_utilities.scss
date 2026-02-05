@@ -1,29 +1,29 @@
 @property --margin-value {
-    syntax: '<length> | <percentage>';
+    syntax: 'auto | <length> | <percentage>';
     initial-value: 0;
     inherits: false;
 }
 
 @property --margin-t-value {
-    syntax: '<length> | <percentage>';
+    syntax: 'auto | <length> | <percentage>';
     initial-value: 0;
     inherits: false;
 }
 
 @property --margin-b-value {
-    syntax: '<length> | <percentage>';
+    syntax: 'auto | <length> | <percentage>';
     initial-value: 0;
     inherits: false;
 }
 
 @property --margin-l-value {
-    syntax: '<length> | <percentage>';
+    syntax: 'auto | <length> | <percentage>';
     initial-value: 0;
     inherits: false;
 }
 
 @property --margin-r-value {
-    syntax: '<length> | <percentage>';
+    syntax: 'auto | <length> | <percentage>';
     initial-value: 0;
     inherits: false;
 }
@@ -36,9 +36,11 @@
 
 // Spacing
 .u-margin {
-    margin:        var(--margin-value);
-    margin-top:    var(--margin-t-value);
-    margin-bottom: var(--margin-b-value);
-    margin-left:   var(--margin-l-value);
-    margin-right:  var(--margin-r-value);
+    margin:        var(--margin-value) !important;
+    margin-top:    var(--margin-t-value) !important;
+    margin-bottom: var(--margin-b-value) !important;
+    margin-left:   var(--margin-l-value) !important;
+    margin-right:  var(--margin-r-value) !important;
 }
+
+.u-max-width { max-width: var(--max-w-value); }

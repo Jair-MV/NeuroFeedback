@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NeuroFeedback</title>
+
+        <!-- Font -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="stylesheet" href="../css/style.css" />
+    </head>
+
+    <body>
+        <header class="header">
+            <div class="container">
+                <a href="../index.html" class="button"
+                    ><ion-icon name="arrow-back-outline"></ion-icon> Regresar</a
+                >
+            </div>
+        </header>
+
+        <main>
+            <form class="main-form u-max-width" style="--max-w-value: 60rem">
+                <fieldset>
+                    <legend class="main-form__legend">Datos personales</legend>
+
+                    <div>
+                        <label class="main-form__label" for="fullName"
+                            >Nombre</label
+                        >
+                        <input
+                            class="main-form__input input"
+                            type="text"
+                            name="fullName"
+                            id="fullName"
+                            placeholder="Ada Lovelace"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label class="main-form__label" for="age">Edad</label>
+                        <input
+                            class="main-form__input input"
+                            type="number"
+                            name="age"
+                            id="age"
+                            min="0"
+                            max="120"
+                            step="1"
+                            placeholder="7"
+                        />
+                    </div>
+
+                    <fieldset class="main-form__gender-fieldset">
+                        <legend
+                            class="main-form__legend main-form__label main-form__legend--gender"
+                        >
+                            Género
+                        </legend>
+
+                        <label
+                            class="main-form__label main-form__label--gender-radio"
+                        >
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Hombre"
+                                required
+                            />
+                            Hombre
+                        </label>
+
+                        <label
+                            class="main-form__label main-form__label--gender-radio"
+                        >
+                            <input type="radio" name="gender" value="Mujer" />
+                            Mujer
+                        </label>
+                    </fieldset>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="main-form__legend">Datos del tutor</legend>
+
+                    <div>
+                        <label class="main-form__label" for="tutorFullName"
+                            >Nombre</label
+                        >
+                        <input
+                            class="main-form__input input"
+                            type="text"
+                            name="tutorFullName"
+                            id="tutorFullName"
+                            placeholder="Galileo Galilei"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label class="main-form__label" for="relationShip"
+                            >Parentesco</label
+                        >
+                        <select
+                            class="main-form__select"
+                            name="relationship"
+                            id="relationShip"
+                            required
+                        >
+                            <option value="">Selecciona una opción</option>
+                            <option value="madre">Madre</option>
+                            <option value="padre">Padre</option>
+                            <option value="herman@">Herman@</option>
+                            <option value="tutor">Tutor</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="main-form__label" for="email"
+                            >Correo</label
+                        >
+                        <input
+                            class="main-form__input input"
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="me@example.com"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label class="main-form__label" for="contactPhone"
+                            >Teléfono</label
+                        >
+                        <input
+                            class="main-form__input input u-margin"
+                            style="--margin-value: 0"
+                            type="tel"
+                            name="contactPhone"
+                            id="contactPhone"
+                            placeholder="55 78562908"
+                        />
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="main-form__legend">Consulta</legend>
+
+                    <div>
+                        <label class="main-form__label" for="notes"
+                            >Motivo de consulta</label
+                        >
+                        <textarea
+                            class="main-form__textarea"
+                            name="notes"
+                            id="notes"
+                            maxlength="255"
+                            rows="4"
+                            placeholder="Describe brevemente el motivo de la consulta"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div>
+                        <label class="main-form__label" for="diagnosis"
+                            >Diagnóstico</label
+                        >
+                        <input
+                            class="main-form__input input"
+                            type="text"
+                            name="diagnosis"
+                            id="diagnosis"
+                            placeholder="Opcional"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="main-form__label" for="channel"
+                            >¿Cómo nos conoció?</label
+                        >
+                        <select
+                            class="main-form__select"
+                            name="channel"
+                            id="channel"
+                        >
+                            <option value="">Selecciona una opción</option>
+                            <option value="Redes">Redes sociales</option>
+                            <option value="Referido">Referido</option>
+                            <option value="Web">Sitio web</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <button
+                    type="submit"
+                    class="main-form__button button button--cta"
+                >
+                    <ion-icon name="person-add-outline"></ion-icon> Agregar
+                </button>
+            </form>
+        </main>
+
+        <!-- Icons -->
+        <script
+            type="module"
+            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+            nomodule
+            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
+    </body>
+</html>

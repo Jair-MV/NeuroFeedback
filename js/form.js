@@ -1,5 +1,7 @@
 // DOM
 const mainFormEl = document.querySelector(".main-form");
+const ageInputEl = document.getElementById("age");
+const tutorFieldsetEl = document.getElementById("tutorFieldset");
 
 // Util
 function populateForm() {
@@ -27,6 +29,12 @@ function populateForm() {
     channelSelectEl.value = "Referido";
 }
 
+// Domain
+function isAdult(age) {
+    return age >= 18;
+}
+
+// Data
 function buildPatientObject(formData) {
     const patientObject = {};
 
@@ -37,6 +45,17 @@ function buildPatientObject(formData) {
     }
 
     return patientObject;
+}
+
+// Render
+function renderTutorFieldset(render = true) {
+    if (render) {
+        tutorFieldsetEl.classList.remove("u-hide");
+        tutorFieldsetEl.disabled = false;
+    } else {
+        tutorFieldsetEl.classList.add("u-hide");
+        tutorFieldsetEl.disabled = true;
+    }
 }
 
 // Handler
@@ -50,8 +69,19 @@ function handleSubmitForm(e) {
     console.log(patientObject);
 }
 
+function handleInputAge(ageValue, isAdultFn) {
+    const patientAge = Number(ageValue);
+    const isPatientAdult = isAdultFn(patientAge);
+
+    if (!isPatientAdult) renderTutorFieldset();
+    if (isPatientAdult) renderTutorFieldset(false);
+}
+
 // Event
 mainFormEl.addEventListener("submit", handleSubmitForm);
+ageInputEl.addEventListener("change", function () {
+    handleInputAge(this.value, isAdult);
+});
 
 // Init
 populateForm();

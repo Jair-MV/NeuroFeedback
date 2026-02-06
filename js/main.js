@@ -1,7 +1,9 @@
+///////////////////////////////////////////////
 // Config
 const DATA_URL = "../patients-data.json";
 const PATIENTS_PER_PAGE = 9;
 
+///////////////////////////////////////////////
 // State
 const state = {
     patients: [],
@@ -10,6 +12,7 @@ const state = {
     totalPages: null,
 };
 
+///////////////////////////////////////////////
 // Utils
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -122,6 +125,7 @@ function patientDetailsModal(state) {
     overlayEl.dataset.state = state;
 }
 
+///////////////////////////////////////////////
 // Handlers
 function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
@@ -149,6 +153,7 @@ function handlePaginationButtonsClick(e) {
     renderPaginationPageNumbers(pageNumbersEl);
 }
 
+///////////////////////////////////////////////
 // Events
 paginationEl.addEventListener("click", handlePaginationButtonsClick);
 
@@ -194,6 +199,7 @@ document.addEventListener("keydown", function (e) {
     patientDetailsModal("close");
 });
 
+///////////////////////////////////////////////
 // Init
 async function init() {
     await loadPatients(DATA_URL);

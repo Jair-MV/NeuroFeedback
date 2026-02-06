@@ -20,6 +20,8 @@ function randomNumber(min, max) {
 const patientsListEl = document.querySelector(".patients-list");
 const paginationEl = document.querySelector(".pagination");
 const pageNumbersEl = document.querySelector(".pagination__page-numbers");
+const overlayEl = document.querySelector(".patient-overlay");
+const patientCardCloseButtonEl = document.querySelector(".patient-card__close");
 
 // ///////////////////////////////////////////////
 // Data
@@ -85,7 +87,7 @@ function renderPatients(container, patients, randomNumber) {
                     ><ion-icon name="calendar-outline"></ion-icon
                     >Agendar</a
                 >
-                <a href="#" class="button"
+                <a href="#" class="button" id="details-button"
                     ><ion-icon name="document-text-outline"></ion-icon
                     >Detalles</a
                 >
@@ -114,6 +116,10 @@ function renderPaginationPageNumbers(container) {
 
         container.insertAdjacentHTML("beforeend", pageNumberMarkup);
     });
+}
+
+function patientDetailsModal(state) {
+    overlayEl.dataset.state = state;
 }
 
 // Handlers
@@ -161,6 +167,31 @@ pageNumbersEl.addEventListener("click", function (e) {
     const patients = getPatients(page);
     renderPatients(patientsListEl, patients, randomNumber);
     renderPaginationPageNumbers(pageNumbersEl);
+});
+
+// Show / Hide modal
+patientsListEl.addEventListener("click", function (e) {
+    const detailsButton = e.target.closest("#details-button");
+
+    if (!detailsButton) return;
+
+    patientDetailsModal("open");
+});
+
+patientCardCloseButtonEl.addEventListener("click", function () {
+    patientDetailsModal("close");
+});
+
+overlayEl.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("patient-overlay")) return;
+
+    patientDetailsModal("close");
+});
+
+document.addEventListener("keydown", function (e) {
+    if (e.code !== "Escape") return;
+
+    patientDetailsModal("close");
 });
 
 // Init

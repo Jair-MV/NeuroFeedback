@@ -70,6 +70,100 @@
                     >
                 </div>
             </div>
+
+            <div class="patient-overlay" role="dialog" aria-modal="true">
+                <article class="patient-card patient-card--extended">
+                    <header
+                        class="patient-card__header u-display u-gap"
+                        style="--display-value: flex; --gap-value: 2rem"
+                    >
+                        <img src="img/ui-face-1.jpg" alt="Patient photo" />
+
+                        <div>
+                            <p class="patient-card__name">Jair Montiel</p>
+                            <p class="patient-card__gender">Hombre</p>
+                        </div>
+
+                        <p class="age">
+                            <span>15</span>
+                            <span>años</span>
+                        </p>
+
+                        <button
+                            type="button"
+                            class="patient-card__close"
+                            aria-label="Cerrar"
+                        >
+                            ✕
+                        </button>
+                    </header>
+
+                    <section class="patient-card__section">
+                        <p class="patient-card__diagnosis">Ansiedad</p>
+                    </section>
+
+                    <section class="patient-card__section">
+                        <h3 class="patient-card__section-title">
+                            Motivo de consulta
+                        </h3>
+                        <p>
+                            Presenta una constante falta de concentración en
+                            clases.
+                        </p>
+                    </section>
+
+                    <section class="patient-card__section">
+                        <h3 class="patient-card__section-title">Tutor</h3>
+
+                        <dl class="patient-card__list">
+                            <div>
+                                <dt>Nombre</dt>
+                                <dd>Martha Leticia Villegas Aguilar</dd>
+                            </div>
+                            <div>
+                                <dt>Parentesco</dt>
+                                <dd>Madre</dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <section class="patient-card__section">
+                        <h3 class="patient-card__section-title">Contacto</h3>
+
+                        <dl class="patient-card__list">
+                            <div>
+                                <dt>Teléfono</dt>
+                                <dd>
+                                    <a href="tel:5567297412">55 6729 7412</a>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt>Correo</dt>
+                                <dd>
+                                    <a href="mailto:letyva71@gmail.com">
+                                        letyva71@gmail.com
+                                    </a>
+                                </dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <footer
+                        class="patient-card__footer u-display u-gap"
+                        style="--display-value: flex; --gap-value: 1rem"
+                    >
+                        <a href="#" class="button">
+                            <ion-icon name="calendar-outline"></ion-icon>
+                            Agendar
+                        </a>
+
+                        <a href="#" class="button">
+                            <ion-icon name="create-outline"></ion-icon>
+                            Editar
+                        </a>
+                    </footer>
+                </article>
+            </div>
         </main>
 
         <!-- Icons -->

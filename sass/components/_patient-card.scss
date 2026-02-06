@@ -1,3 +1,15 @@
+.patient-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000;
+}
+
 .patient-card {
     padding: 1rem;
     border: 1px solid var(--clr-gray-3);
@@ -36,5 +48,55 @@
 
     &__diagnosis {
         margin-bottom: 3rem;
+    }
+
+    &--extended {
+        min-width: 80rem;
+        max-height: 90vh;
+        padding: 2rem;
+
+        background-color: #fff;
+    }
+
+    &__header {
+        position: relative;
+        margin-bottom: 2rem;
+        padding-right: 8rem;
+    }
+
+    &__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+    }
+
+    &__section {
+        margin-bottom: 2.5rem;
+    }
+
+    &__section-title {
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--clr-gray-6);
+    }
+
+    &__list {
+        display: grid;
+        row-gap: 0.75rem;
+    }
+
+    &__list div {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+    }
+
+    &__footer {
+        justify-content: flex-end;
     }
 }

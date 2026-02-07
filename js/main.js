@@ -9,8 +9,11 @@ const state = {
     patients: [],
     patientsPerPage: PATIENTS_PER_PAGE,
     currentPage: 0,
-    totalPages: null,
 };
+
+function getTotalPages() {
+    return Math.ceil(state.patients.length / state.patientsPerPage) - 1;
+}
 
 ///////////////////////////////////////////////
 // Utils
@@ -35,7 +38,6 @@ async function loadPatients(url) {
     const patients = await response.json();
 
     state.patients = patients;
-    state.totalPages = Math.ceil(patients.length / state.patientsPerPage) - 1;
 }
 
 // Get a limit number of patients
@@ -90,7 +92,7 @@ function renderPatients(container, patients, randomNumber) {
                     ><ion-icon name="calendar-outline"></ion-icon
                     >Agendar</a
                 >
-                <a href="#" class="button" id="details-button"
+                <a href="#" class="button" data-action="details"
                     ><ion-icon name="document-text-outline"></ion-icon
                     >Detalles</a
                 >
@@ -101,10 +103,10 @@ function renderPatients(container, patients, randomNumber) {
     });
 }
 
-function renderPaginationPageNumbers(container) {
+function renderPaginationPageNumbers(container, totalPages) {
     container.innerHTML = "";
 
-    Array.from({ length: state.totalPages + 1 }, function (_, i) {
+    Array.from({ length: totalPages + 1 }, function (_, i) {
         const activeClass =
             i === state.currentPage ? "pagination__page-number--active" : "";
 
@@ -150,7 +152,7 @@ function handlePaginationButtonsClick(e) {
 
     const patients = getPatients(state.currentPage);
     renderPatients(patientsListEl, patients, randomNumber);
-    renderPaginationPageNumbers(pageNumbersEl);
+    renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
 }
 
 ///////////////////////////////////////////////
@@ -171,12 +173,12 @@ pageNumbersEl.addEventListener("click", function (e) {
 
     const patients = getPatients(page);
     renderPatients(patientsListEl, patients, randomNumber);
-    renderPaginationPageNumbers(pageNumbersEl);
+    renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
 });
 
 // Show / Hide modal
 patientsListEl.addEventListener("click", function (e) {
-    const detailsButton = e.target.closest("#details-button");
+    const detailsButton = e.target.closest('[data-action="details"]');
 
     if (!detailsButton) return;
 
@@ -205,7 +207,7 @@ async function init() {
     await loadPatients(DATA_URL);
     const patients = getPatients(state.currentPage);
     renderPatients(patientsListEl, patients, randomNumber);
-    renderPaginationPageNumbers(pageNumbersEl);
+    renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
 }
 
 init();

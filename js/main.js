@@ -21,6 +21,10 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function isAdult(age) {
+    return age >= 18;
+}
+
 // ///////////////////////////////////////////////
 // DOM
 const patientsListEl = document.querySelector(".patients-list");
@@ -38,6 +42,10 @@ async function loadPatients(url) {
     const patients = await response.json();
 
     state.patients = patients;
+}
+
+function loadPatient(id) {
+    return state.patients.find((p) => p.id === id);
 }
 
 // Get a limit number of patients
@@ -62,7 +70,7 @@ function renderPatients(container, patients, randomNumber) {
         const imgNumber = randomNumber(0, 5);
 
         const patientMarkup = `
-            <article class="patient-card">
+            <article class="patient-card" data-patient-id="${patient.id}">
                 <div
                     class="u-margin u-display u-gap"
                     style="
@@ -127,6 +135,181 @@ function patientDetailsModal(state) {
     overlayEl.dataset.state = state;
 }
 
+function renderExtendedPatientCard(patient) {
+    const overlay = document.querySelector(".patient-overlay");
+
+    overlay.innerHTML = createPatientExtendedMarkup(patient);
+    overlay.dataset.state = "open";
+
+    const card = overlay.querySelector(".patient-card--extended");
+
+    // Forzar render del estado inicial
+    requestAnimationFrame(() => {
+        card.dataset.state = "open";
+    });
+
+    bindOverlayEvents(overlay);
+}
+
+function createPatientExtendedMarkup(patient) {
+    return `
+        <article class="patient-card patient-card--extended" data-state="closed">
+            ${renderHeader(patient)}
+            ${renderDiagnosis(patient)}
+            ${renderReason(patient)}
+            ${!isAdult(patient.age) ? renderTutor(patient) : ""}
+            ${renderContact(patient)}
+            ${renderFooter()}
+        </article>
+    `;
+}
+
+function renderHeader(patient) {
+    return `
+        <header class="patient-card__header u-display u-gap"
+                style="--display-value:flex; --gap-value:2rem">
+            <img src="img/ui-face-0.jpg" alt="Patient photo">
+
+            <div>
+                <p class="patient-card__name">${patient.fullName}</p>
+                <p class="patient-card__gender">${patient.gender}</p>
+            </div>
+
+            <p class="age">
+                <span>${patient.age}</span>
+                <span>años</span>
+            </p>
+
+            <button type="button"
+                    class="patient-card__close"
+                    aria-label="Cerrar">
+                ✕
+            </button>
+        </header>
+    `;
+}
+
+function renderDiagnosis(patient) {
+    if (!patient.diagnosis) return "";
+
+    return `
+        <section class="patient-card__section">
+            <p class="patient-card__diagnosis">${patient.diagnosis}</p>
+        </section>
+    `;
+}
+
+function renderReason(patient) {
+    if (!patient.notes) return "";
+
+    return `
+        <section class="patient-card__section">
+            <h3 class="patient-card__section-title">Motivo de consulta</h3>
+            <p>${patient.notes}</p>
+        </section>
+    `;
+}
+
+function renderTutor(patient) {
+    if (!patient.tutorFullName) return "";
+
+    return `
+        <section class="patient-card__section">
+            <h3 class="patient-card__section-title">Tutor</h3>
+
+            <dl class="patient-card__list">
+                <div>
+                    <dt>Nombre</dt>
+                    <dd>${patient.tutorFullName}</dd>
+                </div>
+                <div>
+                    <dt>Parentesco</dt>
+                    <dd>${patient.relationship}</dd>
+                </div>
+            </dl>
+        </section>
+    `;
+}
+
+function renderContact(patient) {
+    if (!patient.contactPhone || !patient.email) return "";
+
+    const formatedContactPhone = `${patient.contactPhone.slice(0, 2)} ${patient.contactPhone.slice(2)}`;
+
+    return `
+        <section class="patient-card__section">
+            <h3 class="patient-card__section-title">Contacto</h3>
+
+            <dl class="patient-card__list">
+                ${
+                    patient.contactPhone
+                        ? `
+                    <div>
+                        <dt>Teléfono</dt>
+                        <dd><a href="tel:${patient.contactPhone}">${formatedContactPhone}</a></dd>
+                    </div>
+                `
+                        : ""
+                }
+
+                ${
+                    patient.email
+                        ? `
+                    <div>
+                        <dt>Correo</dt>
+                        <dd><a href="mailto:${patient.email}">${patient.email}</a></dd>
+                    </div>
+                `
+                        : ""
+                }
+            </dl>
+        </section>
+    `;
+}
+
+function renderFooter() {
+    return `
+        <footer class="patient-card__footer u-display u-gap"
+                style="--display-value:flex; --gap-value:1rem">
+            <a href="#" class="button">
+                <ion-icon name="calendar-outline"></ion-icon>
+                Agendar
+            </a>
+
+            <a href="pages/form.html" class="button">
+                <ion-icon name="create-outline"></ion-icon>
+                Editar
+            </a>
+        </footer>
+    `;
+}
+
+function bindOverlayEvents(overlay) {
+    const closeBtn = overlay.querySelector(".patient-card__close");
+
+    closeBtn.addEventListener("click", closeExtendedPatientCard);
+}
+
+function closeExtendedPatientCard() {
+    const overlay = document.querySelector(".patient-overlay");
+    const card = overlay.querySelector(".patient-card--extended");
+
+    if (!card) return;
+
+    // 1. Disparar ambas animaciones al mismo tiempo
+    card.dataset.state = "closed";
+    overlay.dataset.state = "closed";
+
+    // 2. Esperar a que termine la animación MÁS LENTA
+    card.addEventListener(
+        "transitionend",
+        () => {
+            overlay.innerHTML = "";
+        },
+        { once: true },
+    );
+}
+
 ///////////////////////////////////////////////
 // Handlers
 function handlePaginationButtonsClick(e) {
@@ -182,10 +365,15 @@ patientsListEl.addEventListener("click", function (e) {
 
     if (!detailsButton) return;
 
-    patientDetailsModal("open");
+    // Load patient data
+    const patientID = detailsButton.closest(".patient-card").dataset.patientId;
+    const patient = loadPatient(patientID);
+
+    // Render patient card
+    renderExtendedPatientCard(patient);
 });
 
-patientCardCloseButtonEl.addEventListener("click", function () {
+/* patientCardCloseButtonEl.addEventListener("click", function () {
     patientDetailsModal("close");
 });
 
@@ -200,7 +388,7 @@ document.addEventListener("keydown", function (e) {
 
     patientDetailsModal("close");
 });
-
+ */
 ///////////////////////////////////////////////
 // Init
 async function init() {

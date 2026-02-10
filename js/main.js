@@ -131,24 +131,40 @@ function renderPaginationPageNumbers(container, totalPages) {
     });
 }
 
-function patientDetailsModal(state) {
-    overlayEl.dataset.state = state;
-}
-
-function renderExtendedPatientCard(patient) {
+function patientDetailsModal(action, patient) {
     const overlay = document.querySelector(".patient-overlay");
 
-    overlay.innerHTML = createPatientExtendedMarkup(patient);
-    overlay.dataset.state = "open";
+    if (action === "open") {
+        overlay.innerHTML = createPatientExtendedMarkup(patient);
+        overlay.dataset.state = "open";
 
-    const card = overlay.querySelector(".patient-card--extended");
+        const card = overlay.querySelector(".patient-card--extended");
 
-    // Forzar render del estado inicial
-    requestAnimationFrame(() => {
-        card.dataset.state = "open";
-    });
+        requestAnimationFrame(() => {
+            card.dataset.state = "open";
+        });
 
-    bindOverlayEvents(overlay);
+        bindOverlayEvents(overlay);
+        return;
+    }
+
+    if (action === "close") {
+        if (overlay.dataset.state !== "open") return;
+
+        const card = overlay.querySelector(".patient-card--extended");
+        if (!card) return;
+
+        card.dataset.state = "closed";
+        overlay.dataset.state = "closed";
+
+        card.addEventListener(
+            "transitionend",
+            () => {
+                overlay.innerHTML = "";
+            },
+            { once: true },
+        );
+    }
 }
 
 function createPatientExtendedMarkup(patient) {
@@ -370,7 +386,7 @@ patientsListEl.addEventListener("click", function (e) {
     const patient = loadPatient(patientID);
 
     // Render patient card
-    renderExtendedPatientCard(patient);
+    patientDetailsModal("open", patient);
 });
 
 overlayEl.addEventListener("click", function (e) {

@@ -373,10 +373,6 @@ patientsListEl.addEventListener("click", function (e) {
     renderExtendedPatientCard(patient);
 });
 
-/* patientCardCloseButtonEl.addEventListener("click", function () {
-    patientDetailsModal("close");
-});
-
 overlayEl.addEventListener("click", function (e) {
     if (!e.target.classList.contains("patient-overlay")) return;
 
@@ -388,7 +384,7 @@ document.addEventListener("keydown", function (e) {
 
     patientDetailsModal("close");
 });
- */
+
 ///////////////////////////////////////////////
 // Init
 async function init() {

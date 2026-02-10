@@ -136,7 +136,7 @@ function handlePaginationButtonsClick(e) {
 
     const currentPage = state.currentPage;
     const firstPage = 0;
-    const lastPage = state.totalPages;
+    const lastPage = getTotalPages();
 
     let render = true;
 

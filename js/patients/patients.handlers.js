@@ -42,27 +42,9 @@ export function handlePaginationButtonsClick(e) {
 export function bindOverlayEvents(overlay) {
     const closeBtn = overlay.querySelector(".patient-card__close");
 
-    closeBtn.addEventListener("click", closeExtendedPatientCard);
-}
-
-export function closeExtendedPatientCard() {
-    const overlay = document.querySelector(".patient-overlay");
-    const card = overlay.querySelector(".patient-card--extended");
-
-    if (!card) return;
-
-    // 1. Disparar ambas animaciones al mismo tiempo
-    card.dataset.state = "closed";
-    overlay.dataset.state = "closed";
-
-    // 2. Esperar a que termine la animación MÁS LENTA
-    card.addEventListener(
-        "transitionend",
-        () => {
-            overlay.innerHTML = "";
-        },
-        { once: true },
-    );
+    closeBtn.addEventListener("click", function () {
+        patientDetailsModal("close");
+    });
 }
 
 export function bindEvents() {

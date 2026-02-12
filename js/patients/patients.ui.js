@@ -114,7 +114,7 @@ export function createPatientExtendedMarkup(patient) {
             ${renderReason(patient)}
             ${!isAdult(patient.age) ? renderTutor(patient) : ""}
             ${renderContact(patient)}
-            ${renderFooter()}
+            ${renderFooter(patient)}
         </article>
     `;
 }
@@ -222,7 +222,7 @@ export function renderContact(patient) {
     `;
 }
 
-export function renderFooter() {
+export function renderFooter(patient) {
     return `
         <footer class="patient-card__footer u-display u-gap"
                 style="--display-value:flex; --gap-value:1rem">
@@ -231,7 +231,7 @@ export function renderFooter() {
                 Agendar
             </a>
 
-            <a href="pages/form.html" class="button">
+            <a href="pages/form.html?patientId=${patient.id}" class="button">
                 <ion-icon name="create-outline"></ion-icon>
                 Editar
             </a>

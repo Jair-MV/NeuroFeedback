@@ -1,37 +1,44 @@
 import { mainFormEl, ageInputEl } from "./form.dom.js";
 import { handleSubmitForm, handleInputAge } from "./form.handlers.js";
 
-// Util
-function populateForm() {
-    const fullNameInputEl = document.getElementById("fullName");
-    const ageInputEl = document.getElementById("age");
-    const genderRadioEl = document.querySelector("input[name='gender']");
-    const tutorFullNameInputEl = document.getElementById("tutorFullName");
-    const relationshipSelectEl = document.getElementById("relationship");
-    const emailInputEl = document.getElementById("email");
-    const contactPhoneInputEl = document.getElementById("contactPhone");
-    const notesTextAreaEl = document.getElementById("notes");
-    const diagnosisInputEl = document.getElementById("diagnosis");
-    const channelSelectEl = document.getElementById("channel");
+import { loadPatients, loadPatient } from "../patients/patients.api.js";
 
-    fullNameInputEl.value = "Jair Montiel";
-    ageInputEl.value = 15;
-    genderRadioEl.checked = true;
-    tutorFullNameInputEl.value = "Martha Leticia Villegas Aguilar";
-    relationshipSelectEl.value = "Madre";
-    emailInputEl.value = "letyva71@gmail.com";
-    contactPhoneInputEl.value = "55 67297412";
-    notesTextAreaEl.value =
-        "Presenta una constante falta de concentración en clases";
-    diagnosisInputEl.value = "Ansiedad";
-    channelSelectEl.value = "Referido";
+import {
+    renderTutorFieldset,
+    populateForm,
+    updateButtonText,
+} from "./form.ui.js";
+
+import { isAdult } from "../shared/utils.js";
+
+function getPatientId() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("patientId");
 }
 
+const patientId = getPatientId();
+
 // Event
-mainFormEl.addEventListener("submit", handleSubmitForm);
+mainFormEl.addEventListener("submit", function (e) {
+    handleSubmitForm(e, patientId);
+});
 ageInputEl.addEventListener("change", function () {
     handleInputAge(this.value);
 });
 
-// Init
-populateForm();
+async function init() {
+    await loadPatients();
+
+    // Modo edición
+    if (patientId) {
+        const patient = loadPatient(patientId);
+
+        if (isAdult(patient.age)) renderTutorFieldset();
+
+        populateForm(patient);
+
+        updateButtonText();
+    }
+}
+
+init();

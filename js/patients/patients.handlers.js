@@ -1,12 +1,11 @@
+import { getPatients, loadPatient } from "./patients.api.js";
 import {
     paginationEl,
     pageNumbersEl,
     patientsListEl,
     overlayEl,
 } from "./patients.dom.js";
-
 import { state, getTotalPages } from "./patients.state.js";
-import { getPatients, loadPatient } from "./patients.api.js";
 import {
     renderPatients,
     renderPaginationPageNumbers,

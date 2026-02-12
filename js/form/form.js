@@ -33,7 +33,7 @@ async function init() {
     if (patientId) {
         const patient = loadPatient(patientId);
 
-        if (isAdult(patient.age)) renderTutorFieldset();
+        if (!isAdult(patient.age)) renderTutorFieldset();
 
         populateForm(patient);
 

@@ -1,7 +1,5 @@
-// DOM
-const mainFormEl = document.querySelector(".main-form");
-const ageInputEl = document.getElementById("age");
-const tutorFieldsetEl = document.getElementById("tutorFieldset");
+import { mainFormEl, ageInputEl } from "./form.dom.js";
+import { handleSubmitForm, handleInputAge } from "./form.handlers.js";
 
 // Util
 function populateForm() {
@@ -29,58 +27,10 @@ function populateForm() {
     channelSelectEl.value = "Referido";
 }
 
-// Domain
-function isAdult(age) {
-    return age >= 18;
-}
-
-// Data
-function buildPatientObject(formData) {
-    const patientObject = {};
-
-    for (const pair of formData.entries()) {
-        const [key, value] = pair;
-
-        patientObject[key] = value;
-    }
-
-    return patientObject;
-}
-
-// Render
-function renderTutorFieldset(render = true) {
-    if (render) {
-        tutorFieldsetEl.classList.remove("u-hide");
-        tutorFieldsetEl.disabled = false;
-    } else {
-        tutorFieldsetEl.classList.add("u-hide");
-        tutorFieldsetEl.disabled = true;
-    }
-}
-
-// Handler
-function handleSubmitForm(e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    const patientObject = buildPatientObject(formData);
-
-    console.log(patientObject);
-}
-
-function handleInputAge(ageValue, isAdultFn) {
-    const patientAge = Number(ageValue);
-    const isPatientAdult = isAdultFn(patientAge);
-
-    if (!isPatientAdult) renderTutorFieldset();
-    if (isPatientAdult) renderTutorFieldset(false);
-}
-
 // Event
 mainFormEl.addEventListener("submit", handleSubmitForm);
 ageInputEl.addEventListener("change", function () {
-    handleInputAge(this.value, isAdult);
+    handleInputAge(this.value);
 });
 
 // Init

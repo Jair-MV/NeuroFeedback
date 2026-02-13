@@ -235,6 +235,11 @@ export function renderFooter(patient) {
                 <ion-icon name="create-outline"></ion-icon>
                 Editar
             </a>
+
+            <a href="#" class="button button--delete">
+                <ion-icon name="close-outline"></ion-icon>
+                Eliminar
+            </a>
         </footer>
     `;
 }

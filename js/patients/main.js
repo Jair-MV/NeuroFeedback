@@ -8,7 +8,7 @@ import { randomNumber } from "../shared/utils.js";
 const DATA_URL = "../patients-data.json";
 
 async function init() {
-    await loadPatients(DATA_URL);
+    await loadPatients();
 
     const patients = getPatients(state.currentPage);
 

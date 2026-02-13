@@ -31,7 +31,7 @@ async function init() {
 
     // Modo edición
     if (patientId) {
-        const patient = loadPatient(patientId);
+        const patient = await loadPatient(patientId);
 
         if (!isAdult(patient.age)) renderTutorFieldset();
 

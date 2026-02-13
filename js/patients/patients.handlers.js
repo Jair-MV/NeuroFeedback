@@ -68,7 +68,7 @@ export function bindEvents() {
     });
 
     // Show / Hide modal
-    patientsListEl.addEventListener("click", function (e) {
+    patientsListEl.addEventListener("click", async function (e) {
         const detailsButton = e.target.closest('[data-action="details"]');
 
         if (!detailsButton) return;
@@ -76,7 +76,7 @@ export function bindEvents() {
         // Load patient data
         const patientID =
             detailsButton.closest(".patient-card").dataset.patientId;
-        const patient = loadPatient(patientID);
+        const patient = await loadPatient(patientID);
 
         // Render patient card
         patientDetailsModal("open", patient);

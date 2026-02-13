@@ -2,22 +2,22 @@ import { isAdult } from "../shared/utils.js";
 import { renderTutorFieldset } from "./form.ui.js";
 import { updatePatient, createPatient } from "../patients/patients.api.js";
 
-export function handleSubmitForm(e, patientId) {
+export async function handleSubmitForm(e, patientId) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const patientObject = Object.fromEntries(formData.entries());
+    patientObject.age = Number(patientObject.age);
 
     if (patientId) {
         const updatedPatient = {
             ...patientObject,
-            age: Number(patientObject.age),
             id: patientId,
         };
 
-        updatePatient(updatedPatient);
+        await updatePatient(updatedPatient);
     } else {
-        createPatient(patientObject);
+        await createPatient(patientObject);
     }
 
     window.location.href = "../../index.html";

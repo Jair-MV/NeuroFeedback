@@ -1,6 +1,4 @@
-import { bindOverlayEvents } from "./patients.handlers.js";
-import { state } from "./patients.state.js";
-import { isAdult } from "./patients.service.js";
+const overlay = document.querySelector(".patient-overlay");
 
 export function renderPatients(container, patients, randomNumber) {
     container.innerHTML = "";
@@ -50,12 +48,16 @@ export function renderPatients(container, patients, randomNumber) {
     });
 }
 
-export function renderPaginationPageNumbers(container, totalPages) {
+export function renderPaginationPageNumbers(
+    container,
+    totalPages,
+    currentPage,
+) {
     container.innerHTML = "";
 
     Array.from({ length: totalPages + 1 }, function (_, i) {
         const activeClass =
-            i === state.currentPage ? "pagination__page-number--active" : "";
+            i === currentPage ? "pagination__page-number--active" : "";
 
         const pageNumberMarkup = `
             <div
@@ -70,40 +72,37 @@ export function renderPaginationPageNumbers(container, totalPages) {
     });
 }
 
-export function patientDetailsModal(action, patient) {
-    const overlay = document.querySelector(".patient-overlay");
+export function openPatientDetails(patient, { onClose }) {
+    overlay.innerHTML = createPatientExtendedMarkup(patient);
+    overlay.dataset.state = "open";
 
-    if (action === "open") {
-        overlay.innerHTML = createPatientExtendedMarkup(patient);
-        overlay.dataset.state = "open";
+    const card = overlay.querySelector(".patient-card--extended");
 
-        const card = overlay.querySelector(".patient-card--extended");
+    requestAnimationFrame(() => {
+        card.dataset.state = "open";
+    });
 
-        requestAnimationFrame(() => {
-            card.dataset.state = "open";
-        });
+    const closeBtn = overlay.querySelector(".patient-card__close");
 
-        bindOverlayEvents(overlay);
-        return;
-    }
+    closeBtn.addEventListener("click", onClose);
+}
 
-    if (action === "close") {
-        if (overlay.dataset.state !== "open") return;
+export function closePatientDetails() {
+    if (overlay.dataset.state !== "open") return;
 
-        const card = overlay.querySelector(".patient-card--extended");
-        if (!card) return;
+    const card = overlay.querySelector(".patient-card--extended");
+    if (!card) return;
 
-        card.dataset.state = "closed";
-        overlay.dataset.state = "closed";
+    card.dataset.state = "closed";
+    overlay.dataset.state = "closed";
 
-        card.addEventListener(
-            "transitionend",
-            () => {
-                overlay.innerHTML = "";
-            },
-            { once: true },
-        );
-    }
+    card.addEventListener(
+        "transitionend",
+        () => {
+            overlay.innerHTML = "";
+        },
+        { once: true },
+    );
 }
 
 export function createPatientExtendedMarkup(patient) {
@@ -112,7 +111,7 @@ export function createPatientExtendedMarkup(patient) {
             ${renderHeader(patient)}
             ${renderDiagnosis(patient)}
             ${renderReason(patient)}
-            ${!isAdult(patient.age) ? renderTutor(patient) : ""}
+            ${patient.showTutor ? renderTutor(patient) : ""}
             ${renderContact(patient)}
             ${renderFooter(patient)}
         </article>

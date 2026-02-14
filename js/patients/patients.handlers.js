@@ -6,14 +6,14 @@ import {
     overlayEl,
 } from "./patients.dom.js";
 import { state, getTotalPages } from "./patients.state.js";
-import {
-    renderPatients,
-    renderPaginationPageNumbers,
-    patientDetailsModal,
-} from "./patients.ui.js";
+import { renderPatients, renderPaginationPageNumbers } from "./patients.ui.js";
 import { randomNumber } from "../shared/utils.js";
 
 import { getPatients } from "./patients.service.js";
+
+import { openPatientDetails, closePatientDetails } from "./patients.ui.js";
+
+import { isAdult } from "./patients.service.js";
 
 export function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
@@ -45,12 +45,8 @@ export function handlePaginationButtonsClick(e) {
     renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
 }
 
-export function bindOverlayEvents(overlay) {
-    const closeBtn = overlay.querySelector(".patient-card__close");
-
-    closeBtn.addEventListener("click", function () {
-        patientDetailsModal("close");
-    });
+export function handleCloseModal() {
+    closePatientDetails();
 }
 
 export function bindEvents() {
@@ -74,7 +70,12 @@ export function bindEvents() {
             state.patientsPerPage,
         );
         renderPatients(patientsListEl, patients, randomNumber);
-        renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
+
+        renderPaginationPageNumbers(
+            pageNumbersEl,
+            getTotalPages(),
+            state.currentPage,
+        );
     });
 
     // Show / Hide modal
@@ -89,18 +90,22 @@ export function bindEvents() {
         const patient = await loadPatient(patientID);
 
         // Render patient card
-        patientDetailsModal("open", patient);
+        const enrichedPatient = {
+            ...patient,
+            showTutor: isAdult(patient.age),
+        };
+        openPatientDetails(enrichedPatient, { onClose: handleCloseModal });
     });
 
     overlayEl.addEventListener("click", function (e) {
         if (!e.target.classList.contains("patient-overlay")) return;
 
-        patientDetailsModal("close");
+        closePatientDetails();
     });
 
     document.addEventListener("keydown", function (e) {
         if (e.code !== "Escape") return;
 
-        patientDetailsModal("close");
+        closePatientDetails();
     });
 }

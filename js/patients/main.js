@@ -19,7 +19,11 @@ async function init() {
     );
 
     renderPatients(patientsListEl, pagePatients, randomNumber);
-    renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
+    renderPaginationPageNumbers(
+        pageNumbersEl,
+        getTotalPages(),
+        state.currentPage,
+    );
 
     bindEvents();
 }

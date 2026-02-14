@@ -50,8 +50,6 @@ export async function deletePatient(id) {
     if (!response.ok) {
         throw new Error("Error deleting patient");
     }
-
-    state.patients = state.patients.filter((p) => p.id !== id);
 }
 
 export async function loadPatient(id) {

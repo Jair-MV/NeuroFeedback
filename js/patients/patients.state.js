@@ -37,6 +37,10 @@ export function updatePatient(patient) {
     state.patients[index] = patient;
 }
 
+export function deletePatient(id) {
+    state.patients = state.patients.filter((p) => p.id !== id);
+}
+
 export function goForward() {
     state.currentPage++;
 }

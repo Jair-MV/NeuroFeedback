@@ -1,4 +1,4 @@
-import { getPatients, loadPatient } from "./patients.api.js";
+import { loadPatient } from "./patients.api.js";
 import {
     paginationEl,
     pageNumbersEl,
@@ -12,6 +12,8 @@ import {
     patientDetailsModal,
 } from "./patients.ui.js";
 import { randomNumber } from "../shared/utils.js";
+
+import { getPatients } from "./patients.service.js";
 
 export function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
@@ -34,7 +36,11 @@ export function handlePaginationButtonsClick(e) {
 
     if (!render) return;
 
-    const patients = getPatients(state.currentPage);
+    const patients = getPatients(
+        state.patients,
+        state.currentPage,
+        state.patientsPerPage,
+    );
     renderPatients(patientsListEl, patients, randomNumber);
     renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
 }
@@ -62,7 +68,11 @@ export function bindEvents() {
 
         state.currentPage = page;
 
-        const patients = getPatients(page);
+        const patients = getPatients(
+            state.patients,
+            page,
+            state.patientsPerPage,
+        );
         renderPatients(patientsListEl, patients, randomNumber);
         renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
     });

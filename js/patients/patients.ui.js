@@ -1,6 +1,6 @@
 import { bindOverlayEvents } from "./patients.handlers.js";
 import { state } from "./patients.state.js";
-import { isAdult } from "../shared/utils.js";
+import { isAdult } from "./patients.service.js";
 
 export function renderPatients(container, patients, randomNumber) {
     container.innerHTML = "";

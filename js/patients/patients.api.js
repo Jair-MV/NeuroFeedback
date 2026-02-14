@@ -74,11 +74,3 @@ export async function loadPatient(id) {
 
     return patient;
 }
-
-// Dominio lógica
-export function getPatients(page) {
-    const startIndex = page * state.patientsPerPage;
-    const endIndex = startIndex + state.patientsPerPage;
-
-    return state.patients.slice(startIndex, endIndex);
-}

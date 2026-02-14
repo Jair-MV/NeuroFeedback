@@ -1,5 +1,3 @@
-import { state } from "./patients.state.js";
-
 const API_URL = "http://localhost:8001/v1/patients";
 
 export async function loadPatients() {

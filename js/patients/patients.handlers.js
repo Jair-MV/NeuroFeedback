@@ -1,52 +1,48 @@
-import { loadPatient } from "./patients.api.js";
-import {
-    paginationEl,
-    pageNumbersEl,
-    patientsListEl,
-    overlayEl,
-} from "./patients.dom.js";
-import { state, getTotalPages } from "./patients.state.js";
-import { renderPatients, renderPaginationPageNumbers } from "./patients.ui.js";
-import { randomNumber } from "../shared/utils.js";
+import * as state from "./patients.state.js";
+import * as api from "./patients.api.js";
+import * as ui from "./patients.ui.js";
+import * as service from "./patients.service.js";
+import * as utils from "../shared/utils.js";
 
-import { getPatients } from "./patients.service.js";
-
-import { openPatientDetails, closePatientDetails } from "./patients.ui.js";
-
-import { isAdult } from "./patients.service.js";
+const patientsListEl = document.querySelector(".patients-list");
+const paginationEl = document.querySelector(".pagination");
+const pageNumbersEl = document.querySelector(".pagination__page-numbers");
+const overlayEl = document.querySelector(".patient-overlay");
 
 export function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
 
     if (!button) return;
 
-    const currentPage = state.currentPage;
+    const currentPage = state.getCurrentPage();
     const firstPage = 0;
-    const lastPage = getTotalPages();
+    const lastPage = state.getTotalPages();
 
     let render = true;
 
-    if (button.id === "buttonBackwards" && currentPage !== firstPage) {
-        state.currentPage--;
-    } else if (button.id === "buttonForwards" && currentPage !== lastPage) {
-        state.currentPage++;
-    } else {
-        render = false;
-    }
+    if (button.id === "buttonBackwards" && currentPage !== firstPage)
+        state.goBackward();
+    else if (button.id === "buttonForwards" && currentPage !== lastPage)
+        state.goForward();
+    else render = false;
 
     if (!render) return;
 
-    const patients = getPatients(
-        state.patients,
-        state.currentPage,
-        state.patientsPerPage,
+    const patients = service.getPatients(
+        state.getAllPatients(),
+        state.getCurrentPage(),
+        state.getPatientsPerPage(),
     );
-    renderPatients(patientsListEl, patients, randomNumber);
-    renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
+    ui.renderPatients(patientsListEl, patients, utils.randomNumber);
+    ui.renderPaginationPageNumbers(
+        pageNumbersEl,
+        state.getTotalPages(),
+        state.getCurrentPage(),
+    );
 }
 
 export function handleCloseModal() {
-    closePatientDetails();
+    ui.closePatientDetails();
 }
 
 export function bindEvents() {
@@ -60,21 +56,21 @@ export function bindEvents() {
         // Go to selected page
         const page = Number(pageNumber.dataset.pageNumber);
 
-        if (page === state.currentPage) return;
+        if (page === state.getCurrentPage()) return;
 
-        state.currentPage = page;
+        state.setCurrentPage(page);
 
-        const patients = getPatients(
-            state.patients,
+        const patients = service.getPatients(
+            state.getAllPatients(),
             page,
-            state.patientsPerPage,
+            state.getPatientsPerPage(),
         );
-        renderPatients(patientsListEl, patients, randomNumber);
+        ui.renderPatients(patientsListEl, patients, utils.randomNumber);
 
-        renderPaginationPageNumbers(
+        ui.renderPaginationPageNumbers(
             pageNumbersEl,
-            getTotalPages(),
-            state.currentPage,
+            state.getTotalPages(),
+            state.getCurrentPage(),
         );
     });
 
@@ -87,25 +83,46 @@ export function bindEvents() {
         // Load patient data
         const patientID =
             detailsButton.closest(".patient-card").dataset.patientId;
-        const patient = await loadPatient(patientID);
+        const patient = await api.loadPatient(patientID);
 
         // Render patient card
         const enrichedPatient = {
             ...patient,
-            showTutor: isAdult(patient.age),
+            showTutor: service.isAdult(patient.age),
         };
-        openPatientDetails(enrichedPatient, { onClose: handleCloseModal });
+
+        ui.openPatientDetails(enrichedPatient, { onClose: handleCloseModal });
     });
 
     overlayEl.addEventListener("click", function (e) {
         if (!e.target.classList.contains("patient-overlay")) return;
 
-        closePatientDetails();
+        ui.closePatientDetails();
     });
 
     document.addEventListener("keydown", function (e) {
         if (e.code !== "Escape") return;
 
-        closePatientDetails();
+        ui.closePatientDetails();
     });
+}
+
+export async function init() {
+    const patients = await api.loadPatients();
+    state.setPatients(patients);
+
+    const pagePatients = service.getPatients(
+        patients,
+        state.getCurrentPage(),
+        state.getPatientsPerPage(),
+    );
+
+    ui.renderPatients(patientsListEl, pagePatients, utils.randomNumber);
+    ui.renderPaginationPageNumbers(
+        pageNumbersEl,
+        state.getTotalPages(),
+        state.getCurrentPage(),
+    );
+
+    bindEvents();
 }

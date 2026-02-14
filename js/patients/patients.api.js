@@ -9,8 +9,7 @@ export async function loadPatients() {
         throw new Error("Error loading patients");
     }
 
-    const patients = await response.json();
-    state.patients = patients;
+    return await response.json();
 }
 
 export async function createPatient(patientData) {
@@ -26,11 +25,7 @@ export async function createPatient(patientData) {
         throw new Error("Error creating patient");
     }
 
-    const createdPatient = await response.json();
-
-    state.patients.push(createdPatient);
-
-    return createdPatient;
+    return await response.json();
 }
 
 export async function updatePatient(updatedPatient) {
@@ -46,15 +41,7 @@ export async function updatePatient(updatedPatient) {
         throw new Error("Error updating patient");
     }
 
-    const savedPatient = await response.json();
-
-    const index = state.patients.findIndex((p) => p.id === savedPatient.id);
-
-    if (index !== -1) {
-        state.patients[index] = savedPatient;
-    }
-
-    return savedPatient;
+    return await response.json();
 }
 
 export async function deletePatient(id) {
@@ -88,6 +75,7 @@ export async function loadPatient(id) {
     return patient;
 }
 
+// Dominio lógica
 export function getPatients(page) {
     const startIndex = page * state.patientsPerPage;
     const endIndex = startIndex + state.patientsPerPage;

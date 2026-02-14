@@ -4,15 +4,15 @@ import { bindEvents } from "./patients.handlers.js";
 import { state, getTotalPages } from "./patients.state.js";
 import { renderPatients, renderPaginationPageNumbers } from "./patients.ui.js";
 import { randomNumber } from "../shared/utils.js";
-
-const DATA_URL = "../patients-data.json";
+import { setPatients } from "./patients.state.js";
 
 async function init() {
-    await loadPatients();
+    const patients = await loadPatients();
+    setPatients(patients);
 
-    const patients = getPatients(state.currentPage);
+    const pagePatients = getPatients(state.currentPage);
 
-    renderPatients(patientsListEl, patients, randomNumber);
+    renderPatients(patientsListEl, pagePatients, randomNumber);
     renderPaginationPageNumbers(pageNumbersEl, getTotalPages());
 
     bindEvents();

@@ -51,7 +51,14 @@ function handleSubmitForm(e) {
     const patientObject = Object.fromEntries(formData.entries());
     patientObject.age = Number(patientObject.age);
 
-    api.createPatient(patientObject);
+    const patientId = getURLPatientId();
+
+    if (patientId) {
+        const modifiedPatientObject = { ...patientObject, id: patientId };
+        api.updatePatient(modifiedPatientObject);
+    } else {
+        api.createPatient(patientObject);
+    }
 
     window.location.href = "../../index.html";
 }
@@ -73,6 +80,18 @@ function bindEvents() {
     });
 }
 
-export function init() {
+export async function init() {
     bindEvents();
+
+    // Determine how the form is loaded
+    const patientId = getURLPatientId();
+
+    if (!patientId) return;
+
+    const patient = await api.loadPatient(patientId);
+
+    if (!service.isAdult(patient.age)) ui.renderTutorFieldset(tutorFieldsetEl);
+
+    ui.populateForm(patient);
+    ui.updateButtonText();
 }

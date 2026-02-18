@@ -55,9 +55,13 @@ function handleDeletePatient(e) {
 
     handleCloseModal();
 
-    const patiens = state.getAllPatients();
+    const patients = service.getPatients(
+        state.getAllPatients(),
+        state.getCurrentPage(),
+        state.getPatientsPerPage(),
+    );
 
-    ui.renderPatients(patientsListEl, patiens, utils.randomNumber);
+    ui.renderPatients(patientsListEl, patients, utils.randomNumber);
     ui.renderPaginationPageNumbers(
         pageNumbersEl,
         state.getTotalPages(),

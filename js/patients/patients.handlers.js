@@ -9,7 +9,7 @@ const paginationEl = document.querySelector(".pagination");
 const pageNumbersEl = document.querySelector(".pagination__page-numbers");
 const overlayEl = document.querySelector(".patient-overlay");
 
-export function handlePaginationButtonsClick(e) {
+function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
 
     if (!button) return;
@@ -41,11 +41,31 @@ export function handlePaginationButtonsClick(e) {
     );
 }
 
-export function handleCloseModal() {
+function handleCloseModal() {
     ui.closePatientDetails();
 }
 
-export function bindEvents() {
+function handleDeletePatient(e) {
+    const patientId = Number(
+        e.target.closest(".patient-card--extended").dataset.patientId,
+    );
+
+    api.deletePatient(patientId);
+    state.deletePatient(patientId);
+
+    handleCloseModal();
+
+    const patiens = state.getAllPatients();
+
+    ui.renderPatients(patientsListEl, patiens, utils.randomNumber);
+    ui.renderPaginationPageNumbers(
+        pageNumbersEl,
+        state.getTotalPages(),
+        state.getCurrentPage(),
+    );
+}
+
+function bindEvents() {
     paginationEl.addEventListener("click", handlePaginationButtonsClick);
 
     pageNumbersEl.addEventListener("click", function (e) {
@@ -91,7 +111,10 @@ export function bindEvents() {
             showTutor: service.isAdult(patient.age),
         };
 
-        ui.openPatientDetails(enrichedPatient, { onClose: handleCloseModal });
+        ui.openPatientDetails(enrichedPatient, {
+            onClose: handleCloseModal,
+            onDelete: handleDeletePatient,
+        });
     });
 
     overlayEl.addEventListener("click", function (e) {

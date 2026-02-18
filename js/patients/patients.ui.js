@@ -72,19 +72,22 @@ export function renderPaginationPageNumbers(
     });
 }
 
-export function openPatientDetails(patient, { onClose }) {
+export function openPatientDetails(patient, { onClose, onDelete }) {
     overlay.innerHTML = createPatientExtendedMarkup(patient);
     overlay.dataset.state = "open";
 
     const card = overlay.querySelector(".patient-card--extended");
+    card.dataset.patientId = patient.id;
 
     requestAnimationFrame(() => {
         card.dataset.state = "open";
     });
 
     const closeBtn = overlay.querySelector(".patient-card__close");
+    const deleteBtn = overlay.querySelector(".button--delete");
 
     closeBtn.addEventListener("click", onClose);
+    deleteBtn.addEventListener("click", (e) => onDelete(e));
 }
 
 export function closePatientDetails() {

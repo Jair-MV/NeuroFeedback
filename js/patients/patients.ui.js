@@ -37,9 +37,9 @@ export function renderPatients(container, patients, randomNumber) {
                     ><ion-icon name="calendar-outline"></ion-icon
                     >Agendar</a
                 >
-                <a href="#" class="button" data-action="details"
+                <button class="button" data-action="details"
                     ><ion-icon name="document-text-outline"></ion-icon
-                    >Detalles</a
+                    >Detalles</button
                 >
             </article>
         `;

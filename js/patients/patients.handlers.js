@@ -9,6 +9,7 @@ const paginationEl = document.querySelector(".pagination");
 const pageNumbersEl = document.querySelector(".pagination__page-numbers");
 const overlayEl = document.querySelector(".patient-overlay");
 const searchFormInputEl = document.querySelector(".search-form__input");
+const searchResultsEl = document.querySelector(".search-results");
 
 function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
@@ -94,7 +95,7 @@ async function fetchPatientByName(name) {
     try {
         const data = await api.searchByName(name, controller);
 
-        console.log(data);
+        return data;
     } catch (err) {
         if (err.name === "AbortError") {
             // request cancelado
@@ -106,9 +107,15 @@ async function fetchPatientByName(name) {
 }
 
 const handleSearchInput = debounce(async (e) => {
-    if (e.target.value.length < 2) return;
+    if (e.target.value.length < 2) {
+        ui.closeSearchResults(searchResultsEl);
+        return;
+    }
 
-    fetchPatientByName(e.target.value);
+    const patients = await fetchPatientByName(e.target.value);
+
+    ui.renderSearchResultsRows(searchResultsEl, patients);
+    ui.openSearchResults(searchResultsEl);
 }, 300);
 
 function bindEvents() {

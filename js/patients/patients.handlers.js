@@ -8,6 +8,7 @@ const patientsListEl = document.querySelector(".patients-list");
 const paginationEl = document.querySelector(".pagination");
 const pageNumbersEl = document.querySelector(".pagination__page-numbers");
 const overlayEl = document.querySelector(".patient-overlay");
+const searchFormInputEl = document.querySelector(".search-form__input");
 
 function handlePaginationButtonsClick(e) {
     const button = e.target.closest("button");
@@ -69,6 +70,47 @@ function handleDeletePatient(e) {
     );
 }
 
+function debounce(fn, delay) {
+    let timeoutId;
+
+    return function (...args) {
+        clearTimeout(timeoutId);
+
+        timeoutId = setTimeout(() => {
+            fn.apply(this, args);
+        }, delay);
+    };
+}
+
+let controller;
+
+async function fetchPatientByName(name) {
+    if (controller) {
+        controller.abort();
+    }
+
+    controller = new AbortController();
+
+    try {
+        const data = await api.searchByName(name, controller);
+
+        console.log(data);
+    } catch (err) {
+        if (err.name === "AbortError") {
+            // request cancelado
+            console.log("Peticion cancelada");
+        } else {
+            console.error(err);
+        }
+    }
+}
+
+const handleSearchInput = debounce(async (e) => {
+    if (e.target.value.length < 2) return;
+
+    fetchPatientByName(e.target.value);
+}, 300);
+
 function bindEvents() {
     paginationEl.addEventListener("click", handlePaginationButtonsClick);
 
@@ -96,6 +138,10 @@ function bindEvents() {
             state.getTotalPages(),
             state.getCurrentPage(),
         );
+    });
+
+    searchFormInputEl.addEventListener("input", function (e) {
+        handleSearchInput(e);
     });
 
     // Show / Hide modal

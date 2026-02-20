@@ -10,6 +10,18 @@ export async function loadPatients() {
     return await response.json();
 }
 
+export async function searchByName(name, controller) {
+    const response = await fetch(`${API_URL}/findByName/${name}`, {
+        signal: controller.signal,
+    });
+
+    if (!response.ok) {
+        throw new Error("Error searching patient");
+    }
+
+    return await response.json();
+}
+
 export async function createPatient(patientData) {
     const response = await fetch(`${API_URL}/save`, {
         method: "POST",

@@ -8,6 +8,7 @@ const patientsListEl = document.querySelector(".patients-list");
 const paginationEl = document.querySelector(".pagination");
 const pageNumbersEl = document.querySelector(".pagination__page-numbers");
 const overlayEl = document.querySelector(".patient-overlay");
+const searchFormEl = document.querySelector(".search-form");
 const searchFormInputEl = document.querySelector(".search-form__input");
 const searchResultsEl = document.querySelector(".search-results");
 
@@ -106,19 +107,41 @@ async function fetchPatientByName(name) {
     }
 }
 
+let searchedPatients = [];
+
 const handleSearchInput = debounce(async (e) => {
     if (e.target.value.length < 2) {
         ui.closeSearchResults(searchResultsEl);
         return;
     }
 
-    const patients = await fetchPatientByName(e.target.value);
+    searchedPatients = await fetchPatientByName(e.target.value);
 
-    if (!patients.length) return;
+    if (!searchedPatients.length) return;
 
-    ui.renderSearchResultsRows(searchResultsEl, patients);
+    ui.renderSearchResultsRows(searchResultsEl, searchedPatients);
     ui.openSearchResults(searchResultsEl);
 }, 300);
+
+async function handleSearchFormSubmit(e) {
+    e.preventDefault();
+
+    if (!searchedPatients.length) return;
+
+    state.setPatients(searchedPatients);
+
+    ui.renderPatients(
+        patientsListEl,
+        state.getAllPatients(),
+        utils.randomNumber,
+    );
+    ui.renderPaginationPageNumbers(
+        pageNumbersEl,
+        state.getTotalPages(),
+        state.getCurrentPage(),
+    );
+    ui.closeSearchResults(searchResultsEl);
+}
 
 function bindEvents() {
     paginationEl.addEventListener("click", handlePaginationButtonsClick);
@@ -147,6 +170,10 @@ function bindEvents() {
             state.getTotalPages(),
             state.getCurrentPage(),
         );
+    });
+
+    searchFormEl.addEventListener("submit", function (e) {
+        handleSearchFormSubmit(e);
     });
 
     searchFormInputEl.addEventListener("input", function (e) {
@@ -186,6 +213,7 @@ function bindEvents() {
         if (e.code !== "Escape") return;
 
         ui.closePatientDetails();
+        ui.closeSearchResults(searchResultsEl);
     });
 }
 

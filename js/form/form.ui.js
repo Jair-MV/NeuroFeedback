@@ -38,3 +38,11 @@ export function updateButtonText() {
     const mainFormButtonEl = document.querySelector(".main-form__button");
     mainFormButtonEl.innerHTML = `<ion-icon name="person-add-outline"></ion-icon> Actualizar`;
 }
+
+export function renderStatusPill(container) {
+    const statusPillMarkup = `
+        <div class="main-form__status-pill">Editando</div>
+    `;
+
+    container.insertAdjacentHTML("afterbegin", statusPillMarkup);
+}

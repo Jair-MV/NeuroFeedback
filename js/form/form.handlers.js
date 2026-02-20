@@ -59,6 +59,7 @@ export async function init() {
 
     if (!service.isAdult(patient.age)) ui.renderTutorFieldset(tutorFieldsetEl);
 
+    ui.renderStatusPill(mainFormEl);
     ui.populateForm(patient);
     ui.updateButtonText();
 }

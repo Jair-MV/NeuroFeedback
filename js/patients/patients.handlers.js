@@ -114,6 +114,8 @@ const handleSearchInput = debounce(async (e) => {
 
     const patients = await fetchPatientByName(e.target.value);
 
+    if (!patients.length) return;
+
     ui.renderSearchResultsRows(searchResultsEl, patients);
     ui.openSearchResults(searchResultsEl);
 }, 300);

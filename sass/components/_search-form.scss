@@ -54,6 +54,9 @@
 
         padding: 1.5rem 2rem;
 
+        cursor: pointer;
+        user-select: none;
+
         &:hover {
             background-color: var(--clr-blue-2);
         }

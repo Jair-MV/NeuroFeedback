@@ -19,19 +19,51 @@
     </head>
 
     <body>
-        <header class="header">
-            <form
-                class="search-form u-display u-justify-content"
-                style="--display-value: flex; --justify-c-value: center"
-            >
+        <header
+            class="header u-display u-justify-content"
+            style="--display-value: flex; --justify-c-value: center"
+        >
+            <form class="search-form">
                 <input
                     class="search-form__input input"
                     type="text"
+                    name="query"
                     placeholder="Busca por nombre, teléfono o correo"
                 />
                 <button class="button button--icon">
                     <ion-icon name="search-outline"></ion-icon>
                 </button>
+
+                <div class="search-results" data-state="">
+                    <div class="search-results__row">
+                        <p class="search-results__name">
+                            Jair Montiel Villegas
+                        </p>
+                        &bull;
+                        <p class="search-results__gender">Hombre</p>
+                        <p class="search-results__age">25 años</p>
+                    </div>
+                    <div class="search-results__row">
+                        <p class="search-results__name">Oscar Hernandéz Luna</p>
+                        &bull;
+                        <p class="search-results__gender">Hombre</p>
+                        <p class="search-results__age">12 años</p>
+                    </div>
+                    <div class="search-results__row">
+                        <p class="search-results__name">
+                            Evelyn Rangel Quezada
+                        </p>
+                        &bull;
+                        <p class="search-results__gender">Mujer</p>
+                        <p class="search-results__age">20 años</p>
+                    </div>
+                    <div class="search-results__row">
+                        <p class="search-results__name">Jesús de Nazaret</p>
+                        &bull;
+                        <p class="search-results__gender">Hombre</p>
+                        <p class="search-results__age">45 años</p>
+                    </div>
+                </div>
             </form>
         </header>
 

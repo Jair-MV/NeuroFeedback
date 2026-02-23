@@ -72,6 +72,8 @@ function handleDeletePatient(e) {
     );
 }
 
+// //////////////////////////////////////////
+// Search form
 function debounce(fn, delay) {
     let timeoutId;
 
@@ -123,6 +125,8 @@ const handleSearchInput = debounce(async (e) => {
     ui.openSearchResults(searchResultsEl);
 }, 300);
 
+// handleSearchForm and handleSearchResultClick can only execute after searchedPatients is set by handleSearchInput
+
 async function handleSearchFormSubmit(e) {
     e.preventDefault();
 
@@ -143,6 +147,36 @@ async function handleSearchFormSubmit(e) {
     ui.closeSearchResults(searchResultsEl);
 }
 
+async function handleSearchResultClick(e) {
+    const row = e.target.closest(".search-results__row");
+    if (!row) return;
+
+    state.setPatients(searchedPatients);
+
+    const selectedPatient = searchedPatients.find(
+        (p) => p.id === Number(row.dataset.patientId),
+    );
+
+    ui.renderPatients(
+        patientsListEl,
+        state.getAllPatients(),
+        utils.randomNumber,
+    );
+    ui.renderPaginationPageNumbers(
+        pageNumbersEl,
+        state.getTotalPages(),
+        state.getCurrentPage(),
+    );
+    ui.closeSearchResults(searchResultsEl);
+
+    ui.openPatientDetails(selectedPatient, {
+        onClose: handleCloseModal,
+        onDelete: handleDeletePatient,
+    });
+}
+
+// //////////////////////////////////////////
+// Search form
 function bindEvents() {
     paginationEl.addEventListener("click", handlePaginationButtonsClick);
 
@@ -172,14 +206,21 @@ function bindEvents() {
         );
     });
 
+    // //////////////////////////////////////////
+    // Form
     searchFormEl.addEventListener("submit", function (e) {
         handleSearchFormSubmit(e);
+    });
+
+    searchFormEl.addEventListener("click", function (e) {
+        handleSearchResultClick(e);
     });
 
     searchFormInputEl.addEventListener("input", function (e) {
         handleSearchInput(e);
     });
 
+    // //////////////////////////////////////////
     // Show / Hide modal
     patientsListEl.addEventListener("click", async function (e) {
         const detailsButton = e.target.closest('[data-action="details"]');

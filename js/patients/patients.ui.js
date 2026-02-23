@@ -121,7 +121,7 @@ export function renderSearchResultsRows(container, patients) {
 
     patients.forEach((p) => {
         const rowMarkup = `
-            <div class="search-results__row">
+            <div class="search-results__row" data-patient-id=${p.id}>
                 <p class="search-results__name">
                     ${p.fullName}
                 </p>

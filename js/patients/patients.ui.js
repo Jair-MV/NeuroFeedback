@@ -31,7 +31,7 @@ export function renderPatients(container, patients, randomNumber) {
                 <p class="patient-card__diagnosis">${patient.diagnosis}</p>
 
                 <a
-                    href="#"
+                    href="pages/calendar.html"
                     class="u-margin button"
                     style="--margin-r-value: 1rem"
                     ><ion-icon name="calendar-outline"></ion-icon

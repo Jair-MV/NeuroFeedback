@@ -16,8 +16,8 @@ export async function saveDate(date) {
     return await response.json();
 }
 
-export async function getAllDates() {
-    const response = await fetch(`${API_URL}getAll`);
+export async function getAllDates(date) {
+    const response = await fetch(`${API_URL}getAll/${date}`);
 
     if (!response.ok) return;
 
@@ -32,4 +32,30 @@ export async function deleteDate(idDate) {
     if (!response.ok) {
         throw new Error("Error deleting date");
     }
+}
+
+export async function findByPatientId(id) {
+    const response = await fetch(`${API_URL}findByPatientId/${id}`);
+
+    if (!response.ok) {
+        throw new Error("Error deleting date");
+    }
+
+    return await response.json();
+}
+
+export async function updateDate(newDate) {
+    const response = await fetch(`${API_URL}update`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newDate),
+    });
+
+    if (!response.ok) {
+        throw new Error("Error updating date");
+    }
+
+    return await response.json();
 }

@@ -22,7 +22,6 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 
     initialView: "dayGridMonth",
     aspectRatio: 1.8,
-    editable: true,
     headerToolbar: {
         start: "prev,next today",
         center: "title",

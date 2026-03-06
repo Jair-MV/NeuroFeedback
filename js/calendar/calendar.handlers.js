@@ -61,16 +61,17 @@ function getURLPatientId() {
 }
 
 export async function init(calendar) {
-    calendar.on("dateClick", function (info) {
-        handleDateClick(info, calendar);
-    });
-    calendar.on("eventDrop", handleEventDrop);
-
     const patientId = getURLPatientId();
     let patients = await loadPatients();
     let dates = [];
 
     if (patientId) {
+        calendar.on("dateClick", function (info) {
+            handleDateClick(info, calendar);
+        });
+        calendar.on("eventDrop", handleEventDrop);
+        calendar.setOption("editable", true);
+
         dates = await api.findByPatientId(patientId);
         const patient = await loadPatient(patientId);
         state.setPatient(patient);

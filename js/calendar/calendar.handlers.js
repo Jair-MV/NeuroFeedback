@@ -22,11 +22,6 @@ async function handleDateClick(info, calendar) {
 
     const patient = state.getPatient();
 
-    calendar.addEvent({
-        title: patient.fullName,
-        start: info.dateStr,
-    });
-
     const formatedDate = formatDate(info.dateStr);
 
     const [date, time] = formatedDate.split(" ");
@@ -37,7 +32,13 @@ async function handleDateClick(info, calendar) {
         sessionTime: `${date} ${time}`,
     };
 
-    await api.saveDate(dateObj);
+    const updatedDate = await api.saveDate(dateObj);
+
+    calendar.addEvent({
+        title: patient.fullName,
+        start: info.dateStr,
+        extendedProps: { dateId: updatedDate.id },
+    });
 }
 
 function formatDate(dateStr) {

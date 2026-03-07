@@ -86,7 +86,7 @@ async function handleDelete() {
 }
 
 function formatDate(dateStr) {
-    const date = new Date(dateStr);
+    const date = dateStr ? new Date(dateStr) : new Date();
 
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -104,10 +104,14 @@ function getURLPatientId() {
     return params.get("patientId");
 }
 
+function handleDatesSet(dateInfo) {}
+
 export async function init(calendar) {
     const patientId = getURLPatientId();
     let patients = await loadPatients();
     let dates = [];
+
+    calendar.setOption("datesSet", handleDatesSet);
 
     if (patientId) {
         calendar.on("dateClick", function (info) {
@@ -133,7 +137,8 @@ export async function init(calendar) {
         const patient = await loadPatient(patientId);
         state.setPatient(patient);
     } else {
-        dates = await api.getAllDates("2026-03-28");
+        const formatedDate = formatDate();
+        dates = await api.getAllDates(formatedDate);
     }
 
     dates.forEach((d) => {

@@ -1,0 +1,17 @@
+.calendar {
+    max-width: 112rem;
+    margin: 0 auto;
+}
+
+.fc-deleteButton-button.delete-btn {
+    background-color: var(--clr-red-1) !important;
+    border: none !important;
+
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+.fc-deleteButton-button.delete-btn-active {
+    background-color: var(--clr-red-7) !important;
+}

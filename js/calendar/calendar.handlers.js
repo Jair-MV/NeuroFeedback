@@ -41,6 +41,50 @@ async function handleDateClick(info, calendar) {
     });
 }
 
+function handleEventClick(eventClickInfo) {
+    const event = eventClickInfo.event;
+
+    const deleteButton = document.querySelector(".fc-deleteButton-button");
+
+    if (!event.backgroundColor) {
+        event.setProp("backgroundColor", "#e03131");
+        state.setDate(event);
+    } else {
+        event.setProp("backgroundColor", "");
+        const dates = state.getDates();
+        const dateId = event.extendedProps.dateId;
+        const filteredDates = dates.filter(
+            (d) => d.extendedProps.dateId !== dateId,
+        );
+        console.log(filteredDates);
+        state.setDatesArr(filteredDates);
+    }
+
+    if (state.getDates().length) {
+        deleteButton.classList.remove("delete-btn");
+        deleteButton.classList.add("delete-btn-active");
+    } else {
+        deleteButton.classList.add("delete-btn");
+        deleteButton.classList.remove("delete-btn-active");
+    }
+}
+
+async function handleDelete() {
+    const dates = state.getDates();
+    console.log(dates);
+    if (!dates.length) return;
+
+    dates.forEach(async function (d) {
+        d.remove();
+        await api.deleteDate(d.extendedProps.dateId);
+    });
+    state.setDatesArr([]);
+
+    const deleteButton = document.querySelector(".fc-deleteButton-button");
+    deleteButton.classList.add("delete-btn");
+    deleteButton.classList.remove("delete-btn-active");
+}
+
 function formatDate(dateStr) {
     const date = new Date(dateStr);
 
@@ -71,6 +115,19 @@ export async function init(calendar) {
         });
         calendar.on("eventDrop", handleEventDrop);
         calendar.setOption("editable", true);
+        calendar.setOption("eventClick", handleEventClick);
+        calendar.setOption("customButtons", {
+            deleteButton: {
+                text: "Eliminar",
+                click: handleDelete,
+            },
+        });
+        calendar.setOption("footerToolbar", {
+            right: "deleteButton",
+        });
+
+        const deleteButton = document.querySelector(".fc-deleteButton-button");
+        deleteButton.classList.add("delete-btn");
 
         dates = await api.findByPatientId(patientId);
         const patient = await loadPatient(patientId);

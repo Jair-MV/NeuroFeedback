@@ -48,12 +48,12 @@ function handleCloseModal() {
     ui.closePatientDetails();
 }
 
-function handleDeletePatient(e) {
+async function handleDeletePatient(e) {
     const patientId = Number(
         e.target.closest(".patient-card--extended").dataset.patientId,
     );
 
-    api.deletePatient(patientId);
+    await api.deletePatient(patientId);
     state.deletePatient(patientId);
 
     handleCloseModal();

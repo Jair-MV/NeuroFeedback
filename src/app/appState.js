@@ -1,8 +1,24 @@
+const STORAGE_KEY = "appState";
+
 export const state = {
     patients: [],
     patientsPerPage: 9,
     currentPage: 0,
 };
+
+export function loadPersistedState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (!saved) return;
+
+    const parsed = JSON.parse(saved);
+
+    Object.assign(state, parsed);
+}
+
+export function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
 
 export function getTotalPages() {
     return Math.ceil(state.patients.length / state.patientsPerPage) - 1;
@@ -26,6 +42,7 @@ export function setPatients(patients) {
 
 export function setCurrentPage(page) {
     state.currentPage = page;
+    saveState();
 }
 
 export function addPatient(patient) {
@@ -43,8 +60,10 @@ export function deletePatient(id) {
 
 export function goForward() {
     state.currentPage++;
+    saveState();
 }
 
 export function goBackward() {
     state.currentPage--;
+    saveState();
 }

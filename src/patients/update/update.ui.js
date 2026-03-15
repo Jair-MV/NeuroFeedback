@@ -1,13 +1,3 @@
-export function renderTutorFieldset(tutorFieldsetEl, render = true) {
-    if (render) {
-        tutorFieldsetEl.classList.remove("u-hide");
-        tutorFieldsetEl.disabled = false;
-    } else {
-        tutorFieldsetEl.classList.add("u-hide");
-        tutorFieldsetEl.disabled = true;
-    }
-}
-
 export function populateForm(patient) {
     const fullNameInputEl = document.getElementById("fullName");
     const ageInputEl = document.getElementById("age");
@@ -45,4 +35,14 @@ export function renderStatusPill(container) {
     `;
 
     container.insertAdjacentHTML("afterbegin", statusPillMarkup);
+}
+
+export function renderTutorFieldset(tutorFieldsetEl, render = true) {
+    if (render) {
+        tutorFieldsetEl.classList.remove("u-hide");
+        tutorFieldsetEl.disabled = false;
+    } else {
+        tutorFieldsetEl.classList.add("u-hide");
+        tutorFieldsetEl.disabled = true;
+    }
 }

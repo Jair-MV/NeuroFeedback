@@ -1,77 +1,5 @@
 const overlay = document.querySelector(".patient-overlay");
 
-export function renderPatients(container, patients, randomNumber) {
-    container.innerHTML = "";
-
-    patients.forEach((patient) => {
-        const imgNumber = randomNumber(0, 5);
-
-        const patientMarkup = `
-            <article class="patient-card" data-patient-id="${patient.id}">
-                <div
-                    class="u-margin u-display u-gap"
-                    style="
-                        --margin-b-value: 2rem;
-                        --display-value: flex;
-                        --gap-value: 2rem;
-                    "
-                >
-                    <img src="img/ui-face-${imgNumber}.jpg" alt="Patient photo" />
-
-                    <div>
-                        <p class="patient-card__name">
-                            ${patient.fullName}
-                        </p>
-                        <p class="patient-card__gender">${patient.gender}</p>
-                    </div>
-
-                    <p class="age"><span>${patient.age}</span><span>años</span></p>
-                </div>
-
-                <p class="patient-card__diagnosis">${patient.diagnosis}</p>
-
-                <a
-                    href="pages/calendar.html?patientId=${patient.id}"
-                    class="u-margin button"
-                    style="--margin-r-value: 1rem"
-                    ><ion-icon name="calendar-outline"></ion-icon
-                    >Agendar</a
-                >
-                <button class="button" data-action="details"
-                    ><ion-icon name="document-text-outline"></ion-icon
-                    >Detalles</button
-                >
-            </article>
-        `;
-
-        container.insertAdjacentHTML("beforeend", patientMarkup);
-    });
-}
-
-export function renderPaginationPageNumbers(
-    container,
-    totalPages,
-    currentPage,
-) {
-    container.innerHTML = "";
-
-    Array.from({ length: totalPages + 1 }, function (_, i) {
-        const activeClass =
-            i === currentPage ? "pagination__page-number--active" : "";
-
-        const pageNumberMarkup = `
-            <div
-                data-page-number="${i}"
-                class="pagination__page-number ${activeClass}"
-            >
-                ${i + 1}
-            </div>
-        `;
-
-        container.insertAdjacentHTML("beforeend", pageNumberMarkup);
-    });
-}
-
 export function openPatientDetails(patient, { onClose, onDelete }) {
     overlay.innerHTML = createPatientExtendedMarkup(patient);
     overlay.dataset.state = "open";
@@ -106,33 +34,6 @@ export function closePatientDetails() {
         },
         { once: true },
     );
-}
-
-export function openSearchResults(container) {
-    container.dataset.state = "visible";
-}
-
-export function closeSearchResults(container) {
-    container.dataset.state = "";
-}
-
-export function renderSearchResultsRows(container, patients) {
-    container.innerHTML = "";
-
-    patients.forEach((p) => {
-        const rowMarkup = `
-            <div class="search-results__row" data-patient-id=${p.id}>
-                <p class="search-results__name">
-                    ${p.fullName}
-                </p>
-                &bull;
-                <p class="search-results__gender">${p.gender}</p>
-                <p class="search-results__age">${p.age} años</p>
-            </div>
-        `;
-
-        container.insertAdjacentHTML("beforeend", rowMarkup);
-    });
 }
 
 export function createPatientExtendedMarkup(patient) {
@@ -255,7 +156,7 @@ export function renderFooter(patient) {
     return `
         <footer class="patient-card__footer u-display u-gap"
                 style="--display-value:flex; --gap-value:1rem">
-            <a href="#" class="button">
+            <a href="pages/calendar.html?patientId=${patient.id}" class="button">
                 <ion-icon name="calendar-outline"></ion-icon>
                 Agendar
             </a>

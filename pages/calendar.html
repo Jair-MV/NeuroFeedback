@@ -19,18 +19,69 @@
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.20/locales-all.global.min.js"></script>
 
-        <script type="module" src="../js/calendar/index.js"></script>
+        <script type="module" src="../src/calendar.js"></script>
     </head>
 
     <body>
-        <header class="header">
-            <div class="container">
-                <a href="../index.html" class="button"
-                    ><ion-icon name="arrow-back-outline"></ion-icon> Regresar</a
-                >
-            </div>
+        <header class="header header--calendar container">
+            <a href="../index.html" class="button"
+                ><ion-icon name="arrow-back-outline"></ion-icon> Regresar</a
+            >
+
+            <form class="search-form search-form--calendar">
+                <input
+                    class="search-form__input input"
+                    type="text"
+                    name="query"
+                    placeholder="Busca por nombre, teléfono o correo"
+                />
+                <button class="button button--icon">
+                    <ion-icon name="search-outline"></ion-icon>
+                </button>
+
+                <div class="search-results" data-state="">
+                    <div class="search-results__row">
+                        <p class="search-results__name">
+                            Jair Montiel Villegas
+                        </p>
+                        &bull;
+                        <p class="search-results__gender">Hombre</p>
+                        <p class="search-results__age">25 años</p>
+                    </div>
+                    <div class="search-results__row">
+                        <p class="search-results__name">Oscar Hernandéz Luna</p>
+                        &bull;
+                        <p class="search-results__gender">Hombre</p>
+                        <p class="search-results__age">12 años</p>
+                    </div>
+                    <div class="search-results__row">
+                        <p class="search-results__name">
+                            Evelyn Rangel Quezada
+                        </p>
+                        &bull;
+                        <p class="search-results__gender">Mujer</p>
+                        <p class="search-results__age">20 años</p>
+                    </div>
+                    <div class="search-results__row">
+                        <p class="search-results__name">Jesús de Nazaret</p>
+                        &bull;
+                        <p class="search-results__gender">Hombre</p>
+                        <p class="search-results__age">45 años</p>
+                    </div>
+                </div>
+            </form>
         </header>
 
         <div id="calendar" class="calendar"></div>
+
+        <!-- Icons -->
+        <script
+            type="module"
+            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+            nomodule
+            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+        ></script>
     </body>
 </html>
